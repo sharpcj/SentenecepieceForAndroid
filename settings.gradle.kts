@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Sentenecepiece"
+rootProject.name = "SentenecepieceForAndroid"
 include(":app")
-include(":tcl-sentenecepiece")
+include(":android-sentenecepiece")

@@ -40,8 +40,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":tcl-sentenecepiece"))
-    
+
+    implementation(project(":android-sentenecepiece"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

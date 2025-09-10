@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import java.io.File
-import com.tcl.sentenecepiece.SpmNative
+import com.sharpcj.sentenecepiece.SpmNative
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,17 +47,24 @@ class MainActivity : ComponentActivity() {
             Log.i("sharpcj", "=== SentencePiece 测试开始 ===")
             
             // 测试模型加载
-            val modelPath = File(filesDir, "sentencepiece.bpe.model").absolutePath
-            Log.i("sharpcj", "尝试加载模型: $modelPath")
-            
-            val success = SpmNative.loadModel(modelPath)
+            // val modelPath = File(filesDir, "sentencepiece.bpe.model").absolutePath
+            // Log.i("sharpcj", "尝试加载模型: $modelPath")
+            //
+            // val success = SpmNative.loadModel(modelPath)
+            // if (!success) {
+            //     Log.e("sharpcj", "模型加载失败，请确保模型文件存在")
+            //     return
+            // }
+            //
+            // Log.i("sharpcj", "模型加载成功")
+
+            val success = loadModelFromAssets("sentencepiece.bpe.model", "sentencepiece.bpe.model")
             if (!success) {
-                Log.e("sharpcj", "模型加载失败，请确保模型文件存在")
+                Log.e("sharpcj", "模型加载失败，请确保assets目录中存在模型文件")
                 return
             }
-            
-            Log.i("sharpcj", "模型加载成功")
-            
+
+
             // 测试文本
             val testTexts = listOf(
                 "Hello World",
@@ -115,7 +124,8 @@ class MainActivity : ComponentActivity() {
             
             // 6. 验证释放后是否能重新加载
             Log.i("sharpcj", "测试释放后重新加载...")
-            val reloadSuccess = SpmNative.loadModel(modelPath)
+            // val reloadSuccess = SpmNative.loadModel(modelPath)
+            val reloadSuccess = loadModelFromAssets("sentencepiece.bpe.model", "sentencepiece.bpe.model")
             if (reloadSuccess) {
                 Log.i("sharpcj", "重新加载成功")
                 val testAfterReload = SpmNative.encode("Test after reload")
@@ -130,6 +140,37 @@ class MainActivity : ComponentActivity() {
             Log.e("sharpcj", "测试过程中发生异常", e)
         }
     }
+
+    private suspend fun loadModelFromAssets(assetFileName: String, targetFileName: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val targetFile = File(filesDir, targetFileName)
+
+                // 如果目标文件不存在或者需要更新，则从assets复制
+                if (!targetFile.exists()) {
+                    assets.open(assetFileName).use { input ->
+                        targetFile.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    Log.i("sharpcj", "模型文件已从assets复制到: ${targetFile.absolutePath}")
+                }
+
+                // 加载模型
+                val success = SpmNative.loadModel(targetFile.absolutePath)
+                if (success) {
+                    Log.i("sharpcj", "模型加载成功: ${targetFile.absolutePath}")
+                } else {
+                    Log.e("sharpcj", "模型加载失败")
+                }
+                success
+            } catch (e: Exception) {
+                Log.e("sharpcj", "从assets加载模型时发生异常", e)
+                false
+            }
+        }
+    }
+
 }
 
 @Composable
