@@ -1,4 +1,4 @@
-package com.sharpcj.sentenecepiece
+package com.sharpcj.sentencepiece
 
 import org.junit.Test
 

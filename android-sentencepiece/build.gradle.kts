@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sharpcj.sentenecepiece"
+    namespace = "com.sharpcj.sentencepiece"
     compileSdk = 36
 
     defaultConfig {

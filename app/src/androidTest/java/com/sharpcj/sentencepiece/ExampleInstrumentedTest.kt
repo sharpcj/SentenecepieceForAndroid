@@ -1,4 +1,4 @@
-package com.sharpcj.sentenecepiece
+package com.sharpcj.sentencepiece
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -6,7 +6,7 @@
 static sentencepiece::SentencePieceProcessor g_processor;
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_sharpcj_sentenecepiece_SpmNative_loadModel(JNIEnv* env, jobject /*thiz*/, jstring path_) {
+Java_com_sharpcj_sentencepiece_SpmNative_loadModel(JNIEnv* env, jobject /*thiz*/, jstring path_) {
 	const char* path = env->GetStringUTFChars(path_, nullptr);
 	auto status = g_processor.Load(path);
 	env->ReleaseStringUTFChars(path_, path);
@@ -14,7 +14,7 @@ Java_com_sharpcj_sentenecepiece_SpmNative_loadModel(JNIEnv* env, jobject /*thiz*
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_sharpcj_sentenecepiece_SpmNative_encode(JNIEnv* env, jobject /*thiz*/, jstring text_) {
+Java_com_sharpcj_sentencepiece_SpmNative_encode(JNIEnv* env, jobject /*thiz*/, jstring text_) {
 	const char* text = env->GetStringUTFChars(text_, nullptr);
 	std::vector<std::string> pieces;
 	g_processor.Encode(text, &pieces);
@@ -30,7 +30,7 @@ Java_com_sharpcj_sentenecepiece_SpmNative_encode(JNIEnv* env, jobject /*thiz*/, 
 }
 
 extern "C" JNIEXPORT jintArray JNICALL
-Java_com_sharpcj_sentenecepiece_SpmNative_encodeToIds(JNIEnv* env, jobject /*thiz*/, jstring text_) {
+Java_com_sharpcj_sentencepiece_SpmNative_encodeToIds(JNIEnv* env, jobject /*thiz*/, jstring text_) {
 	const char* text = env->GetStringUTFChars(text_, nullptr);
 	std::vector<int> ids;
 	g_processor.Encode(text, &ids);
@@ -44,7 +44,7 @@ Java_com_sharpcj_sentenecepiece_SpmNative_encodeToIds(JNIEnv* env, jobject /*thi
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_sharpcj_sentenecepiece_SpmNative_decode(JNIEnv* env, jobject /*thiz*/, jobjectArray pieces_) {
+Java_com_sharpcj_sentencepiece_SpmNative_decode(JNIEnv* env, jobject /*thiz*/, jobjectArray pieces_) {
 	if (pieces_ == nullptr) {
 		return env->NewStringUTF("");
 	}
@@ -71,7 +71,7 @@ Java_com_sharpcj_sentenecepiece_SpmNative_decode(JNIEnv* env, jobject /*thiz*/, 
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_sharpcj_sentenecepiece_SpmNative_decodeFromIds(JNIEnv* env, jobject /*thiz*/, jintArray ids_) {
+Java_com_sharpcj_sentencepiece_SpmNative_decodeFromIds(JNIEnv* env, jobject /*thiz*/, jintArray ids_) {
 	if (ids_ == nullptr) {
 		return env->NewStringUTF("");
 	}
@@ -92,7 +92,7 @@ Java_com_sharpcj_sentenecepiece_SpmNative_decodeFromIds(JNIEnv* env, jobject /*t
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_sharpcj_sentenecepiece_SpmNative_release(JNIEnv* /*env*/, jobject /*thiz*/) {
+Java_com_sharpcj_sentencepiece_SpmNative_release(JNIEnv* /*env*/, jobject /*thiz*/) {
 	// SentencePiece 使用 RAII 模式，通过 std::unique_ptr 自动管理资源
 	// 重置处理器会触发智能指针的析构，自动释放所有资源
 }

@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SentenecepieceForAndroid"
 include(":app")
-include(":android-sentenecepiece")
+include(":android-sentencepiece")

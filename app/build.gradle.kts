@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sharpcj.sentenecepiece"
+    namespace = "com.sharpcj.sentencepiece"
     compileSdk = 36
 
     defaultConfig {
@@ -41,7 +41,7 @@ android {
 
 dependencies {
 
-    implementation(project(":android-sentenecepiece"))
+    implementation(project(":android-sentencepiece"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
